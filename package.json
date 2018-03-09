@@ -1,0 +1,20 @@
+{
+  "name": "job-queue",
+  "version": "1.0.0",
+  "description": "Job queue whose workers fetch data from a URL and stores the results in a database. The job queue exposes a REST API for adding jobs and checking their status / results.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/louiszhang97/job-queue.git"
+  },
+  "author": "Louis Zhang <louiszhang97@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/louiszhang97/job-queue/issues"
+  },
+  "homepage": "https://github.com/louiszhang97/job-queue#readme"
+}
