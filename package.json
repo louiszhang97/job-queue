@@ -4,7 +4,7 @@
   "description": "Job queue whose workers fetch data from a URL and stores the results in a database. The job queue exposes a REST API for adding jobs and checking their status / results.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "mongod --fork --dbpath=data && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/louiszhang97/job-queue/issues"
   },
-  "homepage": "https://github.com/louiszhang97/job-queue#readme"
+  "homepage": "https://github.com/louiszhang97/job-queue#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^5.0.9"
+  }
 }
