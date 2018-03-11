@@ -10,7 +10,7 @@ var db = mongoose.connection
 db.on('error', console.error.bind(console, 'Error connecting to Mongoose'))
 
 app.set('port', process.env.PORT || 3000)
-app.use('*', routes)
+app.use(routes)
 
 process.on('SIGINT', function () {
   console.log('\n=>Closing Server...')

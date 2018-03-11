@@ -4,7 +4,7 @@ var JobSchema = mongoose.Schema({
   url: String,
   status: String,
   response: mongoose.Schema.Types.Mixed,
-  createdAt: {type: Boolean, default: Date.now()}
+  createdAt: {type: Date, default: Date.now()}
 })
 var Job = mongoose.model('Job', JobSchema)
 
