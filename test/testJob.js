@@ -78,6 +78,7 @@ describe('Jobs', () => { // ensures that test DB is empty
                 .end((err, res) => {
                   console.log('RESULT ' + res.body)
                   res.should.have.status(200)
+                  res.body.should.have.property('jobID')
                   res.body.should.have.property('url')
                   res.body.should.have.property('status')
                   res.body.should.have.property('createdAt')
