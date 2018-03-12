@@ -76,7 +76,6 @@ describe('Jobs', () => { // ensures that test DB is empty
             chai.request(app)
                 .get('/jobs/' + res.body._id)
                 .end((err, res) => {
-                  console.log('RESULT ' + res.body)
                   res.should.have.status(200)
                   res.body.should.have.property('_id')
                   res.body.should.have.property('url')
