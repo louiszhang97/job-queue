@@ -22,15 +22,18 @@ if (config.util.getEnv('NODE_ENV') !== 'test') {
 }
 
 process.on('SIGINT', function () {
-  console.log('\n=>Closing Server...')
-  db.close(function () {
-    console.log('=>Mongoose disconnected on app termination')
-    process.exit(0)
-  })
+  exit()
 })
 
 app.listen(app.get('port'), function () {
   console.log('Server listening on port ' + app.get('port'))
 })
 
+function exit () {
+  console.log('\n=>Closing Server...')
+  db.close(function () {
+    console.log('=>Mongoose disconnected on app termination')
+    process.exit(0)
+  })
+}
 module.exports = app

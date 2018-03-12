@@ -15,21 +15,21 @@ exports.addJobToQueue = function (job) {
   })
 }
 exports.findJob = function (jobID) {
-  console.log('Searching for job with ID: ' + jobID)
+  console.log('Searching for Job: ' + jobID)
   return Job.findById(jobID, function (err, job) {
     if (err) {
-      console.log('ERROR: Cannot find Job ' + jobID)
+      console.log('ERROR: Cannot find Job: ' + jobID)
     }
   })
 }
 
-jobQueue.process = function (job, done) {
+jobQueue.process(function (job, done) {
   var url = job.data.url
   var jobID = job.data.jobID
   console.log('Processing Job: ' + jobID)
   Job.findById(jobID, function (err, currentJob) {
     if (err || !currentJob) {
-      console.log('ERRO: Cannot process Job: ' + jobID)
+      console.log('ERROR: Cannot process Job: ' + jobID)
     } else {
       currentJob.status = 'Processing'
       currentJob.save().then((currentJob) => {
@@ -53,4 +53,4 @@ jobQueue.process = function (job, done) {
       })
     }
   })
-}
+})
