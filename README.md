@@ -41,7 +41,10 @@ http POST http://localhost:3000/jobs url=https://google.com
 
 The JSON response will look like this:
 ```bash
-{"jobID":"5aa5deac7d546409544411f3","jobUrl":"https://google.com/"}
+{
+  "_id":"5aa5deac7d546409544411f3",
+  "url":"https://google.com/"
+}
 ```
 ### Checking the status of a Job
 Using the jobID from the response above: 5aa5deac7d546409544411f3
@@ -56,7 +59,14 @@ http GET http://localhost:3000/jobs/5aa5deac7d546409544411f3
 ```
 The JSON response will be of the format:
 ```bash
-{"jobID": JOB_ID, "createdAt": DATE, "response": RESPONSE, "status": STATUS, "url": URL}
+{
+  "_v": 0, 
+  "_id": "5aa5deac7d546409544411f3",
+  "createdAt": "2018-03-12T16:09:08.186Z",
+  "response": "<HTML>.....</HTML>",
+  "status": "Completed",
+  "url": "https://google.com"
+}
 ```
 NOTE: A job that has not completed yet will not have the "response" field included
 

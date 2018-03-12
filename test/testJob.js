@@ -48,8 +48,8 @@ describe('Jobs', () => { // ensures that test DB is empty
           .send(url)
           .end((err, res) => {
             res.should.have.status(200)
-            res.body.should.have.property('jobID')
-            res.body.should.have.property('jobUrl')
+            res.body.should.have.property('_id')
+            res.body.should.have.property('url')
             done()
           })
     })
@@ -60,7 +60,7 @@ describe('Jobs', () => { // ensures that test DB is empty
       chai.request(app)
           .get('/jobs/1234')
           .end((err, res) => {
-            res.should.have.status(400)
+            res.should.have.status(404)
             done()
           })
     })
@@ -71,14 +71,14 @@ describe('Jobs', () => { // ensures that test DB is empty
           .send(url)
           .end((err, res) => {
             res.should.have.status(200)
-            res.body.should.have.property('jobID')
-            res.body.should.have.property('jobUrl')
+            res.body.should.have.property('_id')
+            res.body.should.have.property('url')
             chai.request(app)
-                .get('/jobs/' + res.body.jobID)
+                .get('/jobs/' + res.body._id)
                 .end((err, res) => {
                   console.log('RESULT ' + res.body)
                   res.should.have.status(200)
-                  res.body.should.have.property('jobID')
+                  res.body.should.have.property('_id')
                   res.body.should.have.property('url')
                   res.body.should.have.property('status')
                   res.body.should.have.property('createdAt')

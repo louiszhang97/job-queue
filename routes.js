@@ -5,10 +5,6 @@ var validURL = require('valid-url')
 // var mongoose = require('mongoose')
 var router = express.Router()
 
-router.get('/', function (req, res) {
-  res.send('Hello World!')
-})
-
 router.post('/jobs', function (req, res) {
   let jobUrl = req.body.url
   if (jobUrl && validURL.isUri(jobUrl)) {
@@ -16,7 +12,7 @@ router.post('/jobs', function (req, res) {
     var formattedUrl = url.format(parsedUrl)
     formattedUrl = 'https://' + parsedUrl.host + parsedUrl.pathname // use HTTPS by default
     jobController.createJob(formattedUrl).then(function (job) {
-      var jsonResponse = JSON.stringify({jobID: job.id, jobUrl: job.url})
+      var jsonResponse = JSON.stringify({_id: job.id, url: job.url})
 
       res.status(200).type('json').send(jsonResponse + '\n')
       jobController.addJobToQueue(job)
@@ -26,18 +22,13 @@ router.post('/jobs', function (req, res) {
   }
 })
 
-router.get('/jobs', function (req, res) {
-  res.send('Get all jobs\n')
-})
-
 router.get('/jobs/:id', function (req, res) {
   jobController.findJob(req.params.id).then(function (job) {
     console.log('Found Job: ' + job.id)
-    var jsonResponse = JSON.stringify(
-      {jobID: job.id, url: job.url, status: job.status, response: job.response, createdAt: job.createdAt})
+    var jsonResponse = JSON.stringify(job)
     res.status(200).type('json').send(jsonResponse + '\n')
   }).catch((error) => {
-    res.status(400).send('ERROR: Cannot find Job: ' + req.params.id + '\n')
+    res.status(404).send('ERROR: Cannot find Job: ' + req.params.id + '\n')
   })
 })
 
