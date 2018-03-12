@@ -1,16 +1,25 @@
-var express = require('express')
-var mongoose = require('mongoose')
-var routes = require('./routes')
-var app = express()
+let express = require('express')
+let mongoose = require('mongoose')
+let morgan = require('morgan')
+let bodyParser = require('body-parser')
+let routes = require('./routes')
+let config = require('config')
 
-mongoose.connect('mongodb://localhost/JobQueueDB',
-                  () => console.log('Mongoose server connected'))
-var db = mongoose.connection
+let app = express()
+
+mongoose.connect(config.DBHost, () => console.log('Mongoose server connected'))
+let db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'Error connecting to Mongoose'))
 
 app.set('port', process.env.PORT || 3000)
+app.use(bodyParser.json())
 app.use(routes)
+
+if (config.util.getEnv('NODE_ENV') !== 'test') {
+  // console.log = function () {} // disable logs for testing
+  app.use(morgan('combined'))
+}
 
 process.on('SIGINT', function () {
   console.log('\n=>Closing Server...')
@@ -23,3 +32,5 @@ process.on('SIGINT', function () {
 app.listen(app.get('port'), function () {
   console.log('Server listening on port ' + app.get('port'))
 })
+
+module.exports = app

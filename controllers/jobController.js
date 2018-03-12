@@ -23,28 +23,34 @@ exports.findJob = function (jobID) {
   })
 }
 
-jobQueue.process(function (job, done) {
+jobQueue.process = function (job, done) {
   var url = job.data.url
   var jobID = job.data.jobID
   console.log('Processing Job: ' + jobID)
-  Job.findById(jobID, function (err, job) {
-    if (err) {
-      console.log('ERROR: Cannot find Job ' + jobID)
+  Job.findById(jobID, function (err, currentJob) {
+    if (err || !currentJob) {
+      console.log('ERRO: Cannot process Job: ' + jobID)
     } else {
-      job.status = 'Processing'
-      job.save()
-      var req = https.get(url, (res) => {
-        let body = ''
-        res.on('data', (data) => { body += data })
-        res.on('end', () => {
-          job.response = body
-          job.status = 'Completed'
-          job.save()
-          console.log(body)
-          console.log('Done processing Job: ' + jobID)
+      currentJob.status = 'Processing'
+      currentJob.save().then((currentJob) => {
+        https.get(url, (res) => {
+          let body = ''
+          res.on('data', (data) => { body += data })
+          res.on('end', () => {
+            currentJob.response = body
+            currentJob.status = 'Completed'
+            currentJob.save()
+            console.log('Done processing Job: ' + jobID)
+            done()
+          })
+        }).on('error', (err) => {
+          currentJob.response = err
+          currentJob.status = 'Completed with error'
+          currentJob.save()
+          console.log('Done processing Job with error: ' + jobID)
           done()
         })
       })
     }
   })
-})
+}

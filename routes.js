@@ -10,12 +10,22 @@ router.get('/', function (req, res) {
 })
 
 router.post('/jobs', function (req, res) {
-  var jobUrl = req.query.url
-  if (validURL.isUri(jobUrl)) {
+  let jobUrl
+  // console.log(req.body.url)
+  // console.log(req.params.url)
+  // console.log(req.query.url)
+  if (req.body.url) {
+    jobUrl = req.body.url
+  } else if (req.params.url) {
+    jobUrl = req.params.url
+  } else if (req.query.url) {
+    jobUrl = req.query.url
+  }
+  if (jobUrl && validURL.isUri(jobUrl)) {
     var parsedUrl = url.parse(jobUrl)
     var formattedUrl = url.format(parsedUrl)
     formattedUrl = 'https://' + parsedUrl.host + parsedUrl.pathname // use HTTPS by default
-    console.log('Adding job url to queue: ' + formattedUrl)
+    // console.log('Adding job url to queue: ' + formattedUrl)
     jobController.createJob(formattedUrl).then(function (job) {
       var jsonResponse = JSON.stringify({jobID: job.id, jobUrl: job.url})
 
@@ -33,11 +43,12 @@ router.get('/jobs', function (req, res) {
 
 router.get('/jobs/:id', function (req, res) {
   jobController.findJob(req.params.id).then(function (job) {
-    var jsonResponse = JSON.stringify(job)
-    res.status(200).send(jsonResponse + '\n')
+    var jsonResponse = JSON.stringify(
+      {url: job.url, status: job.status, response: job.response, createdAt: job.createdAt})
+    res.status(200).type('json').send(jsonResponse + '\n')
   }).catch((error) => {
     res.status(400).send('ERROR: Cannot find Job with ID ' + req.params.id + '\n')
-    console.log(error)
+    // console.log(error)
   })
 })
 

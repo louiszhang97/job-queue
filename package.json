@@ -4,8 +4,8 @@
   "description": "Job queue whose workers fetch data from a URL and stores the results in a database. The job queue exposes a REST API for adding jobs and checking their status / results.",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "set NODE_ENV=dev && node app.js",
+    "test": "mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -18,9 +18,17 @@
   },
   "homepage": "https://github.com/louiszhang97/job-queue#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "bull": "^3.3.10",
+    "config": "^1.30.0",
     "express": "^4.16.2",
     "mongoose": "^5.0.9",
+    "morgan": "^1.9.0",
     "valid-url": "^1.0.9"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "mocha": "^5.0.4"
   }
 }
