@@ -39,7 +39,7 @@ or HTTPie:
 http POST http://localhost:3000/jobs url=https://google.com
 ```
 
-The JSON response will look like this:
+The JSON response will be of the format:
 ```bash
 {
   "_id":"5aa5deac7d546409544411f3",
